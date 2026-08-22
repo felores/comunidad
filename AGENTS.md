@@ -40,12 +40,6 @@ Los posts NACEN en este repo, no en el vault. El vault conserva el research y
 las ideas (`felo/wiki/ideas/`); el post terminado se escribe aquí en **MDX**
 (permiten componentes de Astro: embeds, cards de la transmisión) y se publica
 con commit + deploy.
-## Posts (contenido de la comunidad)
-
-Los posts NACEN en este repo, no en el vault. El vault conserva el research y
-las ideas (`felo/wiki/ideas/`); el post terminado se escribe aquí en **MDX**
-(permiten componentes de Astro: embeds, cards de la transmisión) y se publica
-con commit + deploy.
 
 ### Publicaciones de la comunidad vs publicaciones propias (NO mezclar)
 
