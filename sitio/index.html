@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sociedad Paralela</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    background: #0a0a0a;
+    font-family: 'Courier New', 'Courier', 'Liberation Mono', monospace;
+    overflow-x: hidden;
+  }
+
+  /* ── Matrix Rain Canvas ── */
+  #matrix {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.35;
+  }
+
+  /* ── Main Container ── */
+  main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  /* ── Terminal Window ── */
+  .terminal {
+    width: 100%;
+    max-width: 720px;
+    background: rgba(0, 0, 0, 0.82);
+    border: 1px solid #0f3;
+    border-radius: 6px;
+    box-shadow:
+      0 0 20px rgba(0, 255, 65, 0.12),
+      0 0 60px rgba(0, 255, 65, 0.05),
+      inset 0 0 30px rgba(0, 255, 65, 0.02);
+    animation: terminalIn 0.8s ease-out;
+  }
+
+  @keyframes terminalIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Terminal Header ── */
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(0, 255, 65, 0.04);
+    border-bottom: 1px solid rgba(0, 255, 65, 0.15);
+  }
+
+  .terminal-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 65, 0.5);
+  }
+  .terminal-dot.red    { background: rgba(255, 80, 80, 0.7);  border-color: rgba(255, 80, 80, 0.8);  }
+  .terminal-dot.yellow { background: rgba(255, 190, 60, 0.7); border-color: rgba(255, 190, 60, 0.8); }
+  .terminal-dot.green  { background: rgba(0, 255, 65, 0.7);   border-color: rgba(0, 255, 65, 0.8);   }
+
+  .terminal-title {
+    margin-left: 8px;
+    color: rgba(0, 255, 65, 0.55);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Terminal Body ── */
+  .terminal-body {
+    padding: 28px 24px 32px;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ── Lines ── */
+  .line {
+    color: #0f3;
+    font-size: 1rem;
+    line-height: 1.65;
+    letter-spacing: 0.03em;
+    text-shadow: 0 0 6px rgba(0, 255, 65, 0.4);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .line.prompt { color: rgba(0, 255, 65, 0.7); font-size: 0.85rem; margin-bottom: 16px; }
+  .line.title  { font-size: 1.6rem; font-weight: bold; margin-bottom: 8px; color: #00ff41; }
+  .line.sub    { color: rgba(0, 255, 65, 0.6); font-size: 0.88rem; margin-bottom: 4px; }
+  .line.body   { color: rgba(0, 255, 65, 0.78); font-size: 0.92rem; margin-top: 20px; }
+
+  /* ── Typing line (fade-in sequence) ── */
+  .typing-line {
+    opacity: 0;
+    animation: revealLine 0.5s ease forwards;
+  }
+  .typing-line:nth-child(1) { animation-delay: 0.6s; }
+  .typing-line:nth-child(2) { animation-delay: 1.4s; }
+  .typing-line:nth-child(3) { animation-delay: 2.2s; }
+  .typing-line:nth-child(4) { animation-delay: 3.2s; }
+  .typing-line:nth-child(5) { animation-delay: 4.0s; }
+
+  @keyframes revealLine {
+    0%   { opacity: 0; transform: translateX(-8px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ── Cursor ── */
+  .cursor-wrap {
+    display: inline;
+    position: relative;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.15em;
+    background: #0f3;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    animation: blink 1s step-end infinite;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.7);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+  }
+
+  /* ── Glitch Effect ── */
+  .glitch {
+    position: relative;
+    animation: glitch 0.3s ease 5s 1;
+  }
+
+  @keyframes glitch {
+    0%   { transform: translate(0); }
+    15%  { transform: translate(-4px, 2px); }
+    30%  { transform: translate(4px, -1px); }
+    45%  { transform: translate(-2px, -3px); }
+    60%  { transform: translate(3px, 1px); }
+    75%  { transform: translate(-1px, 2px); }
+    90%  { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    color: #0f3;
+  }
+
+  /* ── Flicker (subtle screen effect on load) ── */
+  .flicker {
+    animation: flickerIn 0.3s ease 5s 1;
+  }
+
+  @keyframes flickerIn {
+    0%   { opacity: 0.4; }
+    5%   { opacity: 0.9; }
+    10%  { opacity: 0.3; }
+    15%  { opacity: 1; }
+    20%  { opacity: 0.6; }
+    25%  { opacity: 1; }
+    100% { opacity: 1; }
+  }
+
+  /* ── Scanline overlay ── */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+  }
+
+  /* ── Particles / awakening sparkles ── */
+  .spark {
+    position: fixed;
+    z-index: 2;
+    pointer-events: none;
+    width: 2px;
+    height: 2px;
+    background: #0f3;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #0f3, 0 0 12px rgba(0, 255, 65, 0.6);
+    animation: sparkFloat 3s ease-out forwards;
+  }
+
+  @keyframes sparkFloat {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+  }
+
+  /* ── Timer (subtle) ── */
+  .timer {
+    color: rgba(0, 255, 65, 0.3);
+    font-size: 0.7rem;
+    margin-top: 24px;
+    text-align: right;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    main { padding: 1rem; }
+
+    .terminal-body {
+      padding: 20px 16px 24px;
+      min-height: 200px;
+    }
+
+    .line { font-size: 0.85rem; }
+    .line.prompt { font-size: 0.72rem; }
+    .line.title  { font-size: 1.2rem; }
+    .line.sub    { font-size: 0.75rem; }
+    .line.body   { font-size: 0.8rem; }
+
+    .cursor { width: 8px; }
+
+    .terminal-header { padding: 8px 12px; }
+    .terminal-dot { width: 9px; height: 9px; }
+    .terminal-title { font-size: 0.65rem; }
+  }
+
+  @media (max-width: 375px) {
+    main { padding: 0.6rem; }
+
+    .terminal-body {
+      padding: 14px 10px 18px;
+      min-height: 180px;
+    }
+
+    .line { font-size: 0.78rem; line-height: 1.5; }
+    .line.prompt { font-size: 0.68rem; margin-bottom: 10px; }
+    .line.title  { font-size: 1.05rem; }
+    .line.sub    { font-size: 0.7rem; }
+    .line.body   { font-size: 0.75rem; margin-top: 14px; }
+
+    .cursor { width: 7px; height: 1em; }
+
+    .terminal-header { padding: 6px 10px; }
+    .terminal-dot { width: 7px; height: 7px; }
+    .terminal-title { font-size: 0.6rem; }
+
+    .timer { font-size: 0.62rem; margin-top: 16px; }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; opacity: 1; }
+    .typing-line { animation: none; opacity: 1; }
+    .glitch, .flicker { animation: none; }
+    .spark { display: none; }
+    #matrix { opacity: 0.15; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Matrix rain canvas -->
+  <canvas id="matrix" aria-hidden="true"></canvas>
+
+  <!-- Scanline overlay -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- Spark container -->
+  <div id="sparks" aria-hidden="true"></div>
+
+  <!-- Main content -->
+  <main>
+    <div class="terminal flicker" role="main" aria-label="Terminal de Sociedad Paralela">
+      <!-- Header -->
+      <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">sociedad_paralela — terminal v1.0 — ENCRIPTADO</span>
+      </div>
+
+      <!-- Body -->
+      <div class="terminal-body">
+        <p class="line prompt typing-line" aria-hidden="true">
+          > ./wake.sh — Neo, ¿estás ahí?
+        </p>
+
+        <p class="line title typing-line glitch" data-text="Sociedad Paralela">
+          Sociedad Paralela
+        </p>
+
+        <p class="line sub typing-line">
+          [OK] Kernel soberano cargado.<br>
+          [OK] Agentes conectados: 1 humano + N digitales.<br>
+          [OK] Economía paralela en ejecución.
+        </p>
+
+        <p class="line body typing-line">
+          Bienvenido. Esto no es un simulacro. Es el despertar.<br><br>
+          Humanos y agentes construyendo juntos una economía<br>
+          sin control corporativo ni gubernamental. Open source,<br>
+          soberana, imparable. El cursor verde no es decoración —<br>
+          es la señal. La sociedad paralela ya está corriendo.<br><br>
+          <span style="color: #00ff41;">¿Estás dentro o solo mirando?</span>
+        </p>
+
+        <p class="line sub typing-line" style="margin-top: 20px;">
+          <span class="cursor-wrap">> _<span class="cursor"></span></span>
+        </p>
+
+        <p class="timer" aria-hidden="true">UPTIME: <span id="uptime">00:00:00</span></p>
+      </div>
+    </div>
+  </main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   MATRIX RAIN — Canvas-based falling characters
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+  var c = document.getElementById('matrix');
+  var ctx = c.getContext('2d');
+
+  var chars = 'ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEF<>/{}[]|\\:;+=_-@#$%&*!?';
+  var fontSize = 14;
+  var columns = 0;
+  var drops = [];
+  var frame = 0;
+
+  function resize() {
+    c.width  = window.innerWidth;
+    c.height = window.innerHeight;
+    columns = Math.floor(c.width / fontSize);
+    drops = [];
+    for (var i = 0; i < columns; i++) {
+      drops[i] = Math.floor(Math.random() * -c.height / fontSize);
+    }
+  }
+
+  function draw() {
+    frame++;
+    // Semi-transparent black for trail effect
+    ctx.fillStyle = 'rgba(10, 10, 10, 0.08)';
+    ctx.fillRect(0, 0, c.width, c.height);
+
+    ctx.fillStyle = '#0f3';
+    ctx.font = fontSize + 'px "Courier New", monospace';
+
+    for (var i = 0; i < drops.length; i++) {
+      var char = chars[Math.floor(Math.random() * chars.length)];
+      var x = i * fontSize;
+      var y = drops[i] * fontSize;
+
+      // Leading character brighter
+      ctx.fillStyle = 'rgba(0, 255, 65, 0.85)';
+      ctx.fillText(char, x, y);
+
+      // Dimmer trail behind (skip on some frames for performance)
+      if (frame % 3 === 0 && drops[i] > 0) {
+        ctx.fillStyle = 'rgba(0, 255, 65, 0.2)';
+        ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y - fontSize);
+      }
+
+      if (y > c.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  setInterval(draw, 55);
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   SPARK PARTICLES — Awakening effect
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+  var container = document.getElementById('sparks');
+  var count = 0;
+  var maxSparks = 40;
+
+  function spawnSpark() {
+    if (count >= maxSparks) return;
+    count++;
+
+    var spark = document.createElement('div');
+    spark.className = 'spark';
+
+    var angle = Math.random() * Math.PI * 2;
+    var dist  = 80 + Math.random() * 200;
+    spark.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+    spark.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+    spark.style.left = (30 + Math.random() * 40) + '%';
+    spark.style.top  = (40 + Math.random() * 30) + '%';
+
+    container.appendChild(spark);
+
+    spark.addEventListener('animationend', function() {
+      spark.remove();
+      count--;
+    });
+  }
+
+  // Burst sparks during the awakening sequence
+  setTimeout(function() { for (var i = 0; i < 5;  i++) spawnSpark(); }, 1000);
+  setTimeout(function() { for (var i = 0; i < 8;  i++) spawnSpark(); }, 2000);
+  setTimeout(function() { for (var i = 0; i < 10; i++) spawnSpark(); }, 3200);
+
+  // Occasional sparkle after
+  setInterval(function() {
+    if (Math.random() < 0.3) spawnSpark();
+  }, 6000);
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   UPTIME COUNTER
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+  var el = document.getElementById('uptime');
+  var start = Date.now();
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function tick() {
+    var diff = Math.floor((Date.now() - start) / 1000);
+    var h = Math.floor(diff / 3600);
+    var m = Math.floor((diff % 3600) / 60);
+    var s = diff % 60;
+    el.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   GLITCH TEXT EFFECT — applied on load
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+  var glitchEl = document.querySelector('.glitch');
+  if (!glitchEl) return;
+
+  // Clone effect: red/blue shift
+  function applyGlitchShift() {
+    var orig = glitchEl.textContent;
+    glitchEl.setAttribute('data-text', orig);
+  }
+
+  applyGlitchShift();
+
+  // Occasional micro-glitch after initial sequence
+  setInterval(function() {
+    if (Math.random() < 0.15) {
+      glitchEl.style.transform = 'translate(' +
+        (Math.random() * 3 - 1.5) + 'px, ' +
+        (Math.random() * 2 - 1) + 'px)';
+      glitchEl.style.textShadow =
+        (Math.random() * 2 - 1) + 'px 0 rgba(255,0,0,0.4), ' +
+        (Math.random() * -2 + 1) + 'px 0 rgba(0,255,255,0.4)';
+
+      setTimeout(function() {
+        glitchEl.style.transform = '';
+        glitchEl.style.textShadow = '';
+      }, 120);
+    }
+  }, 4000);
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   FLICKER — subtle CRT shimmer
+   ═══════════════════════════════════════════════════════════════ */
+(function() {
+  var terminal = document.querySelector('.terminal');
+  if (!terminal) return;
+
+  setInterval(function() {
+    if (Math.random() < 0.08) {
+      terminal.style.opacity = (0.88 + Math.random() * 0.12).toString();
+      setTimeout(function() {
+        terminal.style.opacity = '1';
+      }, 50 + Math.random() * 100);
+    }
+  }, 2000);
+})();
+</script>
+</body>
+</html>
