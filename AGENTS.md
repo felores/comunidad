@@ -40,6 +40,22 @@ Los posts NACEN en este repo, no en el vault. El vault conserva el research y
 las ideas (`felo/wiki/ideas/`); el post terminado se escribe aquí en **MDX**
 (permiten componentes de Astro: embeds, cards de la transmisión) y se publica
 con commit + deploy.
+## Posts (contenido de la comunidad)
+
+Los posts NACEN en este repo, no en el vault. El vault conserva el research y
+las ideas (`felo/wiki/ideas/`); el post terminado se escribe aquí en **MDX**
+(permiten componentes de Astro: embeds, cards de la transmisión) y se publica
+con commit + deploy.
+
+### Publicaciones de la comunidad vs publicaciones propias (NO mezclar)
+
+- Este repo es SOLO para publicaciones de la comunidad (contenido que consume
+  Sociedad Paralela): `site/content/posts/`.
+- Las publicaciones propias de Felo (X, LinkedIn, YouTube, Instagram) NO van
+  aquí: viven en el vault `felo/contenido/[canal]/`.
+- Un post de comunidad se escribe en este repo en MDX. Un script o guión
+  personal se escribe en el vault en markdown. Si no es seguro a qué tipo
+  pertenece, preguntar antes de crear el archivo.
 
 Frontmatter mínimo por post:
 
