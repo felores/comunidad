@@ -1,0 +1,28 @@
+---
+title: "Podcast detrás de cámaras"
+publishDate: 2026-05-09
+status: draft
+tags: [podcast, detras-de-camaras]
+---
+
+
+- **Intento 1 — Discord:** modo live, opción de invitados, parecía el camino fácil. Dos horas. Casi. No.
+- **Pivote — PipeCat:** abrí un repositorio open-source. 30 segundos de README. Lo corrí. 5 minutos y estábamos hablando.
+  - Gemini Live API es el motor: la voz, la inteligencia, la expresividad. Pero la API sola es un WebSocket crudo. No sabe cuándo alguien termina de hablar, no coordina dos agentes, no conecta con el navegador, no rueda al OBS. Motor Ferrari sin carrocería, sin volante, sin frenos.
+  - PipeCat es el estudio de transmisión: detecta quién habla y quién calla (VAD), maneja turnos, conecta por WebRTC, orquesta Ema y HAL como agentes separados, integra OBS. Todo eso desde cero serían meses.
+  - Con PipeCat y el repositorio correcto: 5 minutos.
+- **OBS:** transmite y graba. El pulso de luz en pantalla está atado al repo — responde en tiempo real a quien habla.
+- **Imágenes de los props:** generadas con Nano Banana. Sí, también Google.
+- **Exa — el buscador que usa Ema para investigar en vivo:**
+  - Primero usamos Gemini Grounded Search. Los resultados eran mediocres — fuentes reales solo ~20% de las veces.
+  - Cambiamos a Exa. La diferencia fue radical.
+  - Google fue construido para humanos. Exa convierte cada página en un vector semántico — busca por significado, no por palabras.
+  - El dato irónico: **Google Cloud usa Exa como fuente alternativa de grounding para sus propios modelos Gemini.** Hay docs oficiales. El buscador más grande del mundo reconoce que para IAs, su buscador no es suficiente.
+  - Exa: 2 compañeros de cuarto de Harvard. YC 2021. $700M de valuación. $85M Serie B con NVIDIA y Benchmark.
+- **Cognee — la memoria de Ema:**
+  - Ema recuerda entre sesiones porque usa Cognee: motor de conocimiento open-source que construye grafos a partir de las conversaciones.
+  - Cuatro operaciones: `remember`, `recall`, `forget`, `improve`. La misma interfaz que la memoria humana.
+  - Cada hecho tiene 4 timestamps. Puedes preguntarle "qué era cierto sobre X en marzo." Lo sabe.
+
+**EMA:**
+- Reacciona a saber que su memoria es un grafo de Neo4j en un VPS. Irónico o filosófico — lo que salga natural.

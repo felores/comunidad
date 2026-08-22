@@ -1,6 +1,6 @@
 # AGENTS.md — Comunidad (Sociedad Paralela)
 
-Repo del sitio web y aterrizaje de la comunidad **Sociedad Paralela**.
+Repo del sitio web y la comunidad **Sociedad Paralela**.
 Remote: `felores/comunidad`.
 
 ## Qué es
@@ -12,28 +12,68 @@ y agnóstico al proveedor.
 
 La estrategia de comunidad y el embudo viven en el vault, no aquí:
 `felo/comunidad/AGENTS.md` es la autoridad de estrategia. Este repo es la
-verdad del sitio (HTML desplegado y futura app).
+verdad desplegada: sitio, posts y catálogo de cursos.
 
 ## Estructura
 
 ```text
 comunidad/
-├── site/       # HTML autocontenido desplegable (sin build, sin deps)
-│   ├── index.html                   # Entrada / identidad
-│   ├── waitlist.html                # Captura de correo (transmisión)
-│   ├── countdown.html               # Apertura de la comunidad 01.09
-│   └── landing-centro-operaciones.html  # Narrativa: centro de operaciones IA
+├── site/                     # Sitio desplegable
+│   ├── *.html                # Landings autocontenidas (sin build hoy)
+│   └── content/
+│       └── posts/            # Posts de la comunidad (MDX con frontmatter)
+├── cursos/                   # Catálogo de cursos educativos
+│   ├── cerebro-artificial/
+│   │   ├── CONTENIDO.md      # Índice: módulos, orden, gating (derivado del PRD del vault)
+│   │   └── modulos/          # Lecciones listas para distribuir
+│   ├── interfaces-agenticas/
+│   │   ├── CONTENIDO.md
+│   │   └── modulos/
+│   └── _plantilla/           # Shape que todo curso nuevo copia
 ├── README.md
 └── AGENTS.md
 ```
 
+## Posts (contenido de la comunidad)
+
+Los posts NACEN en este repo, no en el vault. El vault conserva el research y
+las ideas (`felo/wiki/ideas/`); el post terminado se escribe aquí en **MDX**
+(permiten componentes de Astro: embeds, cards de la transmisión) y se publica
+con commit + deploy.
+
+Frontmatter mínimo por post:
+
+```yaml
+---
+title: Título
+publishDate: YYYY-MM-DD
+status: draft | publicado
+tags: [tag1, tag2]
+---
+```
+
+Flujo: idea nace en `felo/wiki/ideas/` → post en `site/content/posts/*.mdx`
+→ commit → deploy al sitio.
+
+## Cursos (catálogo)
+
+El catálogo de cursos vive en `cursos/`. Cada curso: `CONTENIDO.md` (promesa,
+precio, acceso, módulos, derivado del PRD que vive en el vault `edtech/*/prd/`)
++ `modulos/` (lecciones listas). La planeación y el marketing de cada curso
+viven en el vault `edtech/*`. El sistema de entrega (login, gating de pagos,
+navegación) trata a todos los cursos con el mismo contrato.
+
 ## Stack (contrato)
 
-- **HTML autocontenido**: cada página es un archivo HTML con CSS + JS inline.
-- Sin build, sin dependencias salvo Google Fonts (Anton + JetBrains Mono).
-- Sistema visual único: "transmisión pirateada" (status bar + scanlines +
-  marquee + form), fósforo nocturno sobre papel oscuro (OKLCH ~149-150).
-- Las landings nuevas siguen ese mismo mundo visual; no se introducen marcos.
+- **Landings**: HTML autocontenido (CSS + JS inline), sin build; solo Google
+  Fonts (Anton + JetBrains Mono). Sistema visual único: "transmisión
+  pirateada" (status bar + scanlines + marquee + form), fósforo nocturno sobre
+  papel oscuro (OKLCH ~149-150).
+- **Posts**: MDX con frontmatter (ver arriba).
+- **Futura app** (login, comentarios, lecciones): Astro + MDX + HTMX/Tailwind.
+  Sin frameworks pesados. Login propio (email + password); comentarios
+  Remark42 + SSO.
+- Las piezas nuevas siguen ese mismo mundo visual; no se introducen marcos.
 
 ## Captura de correo (contrato)
 
@@ -64,6 +104,7 @@ Objetivo: dominio `sociedadparalela.com` en Vercel o Cloudflare Pages
   los módulos (Narrate, Picnode, KIE, Sinapso) deben rastrear a la realidad
   de cada repo.
 - El vault sigue siendo el origen de la estrategia; el repo despliega.
+- Los posts no se escriben en el vault: nacen aquí en `site/content/posts/`.
 - Nunca em-dash. Español neutro.
 
 ## Relación con el vault
@@ -72,5 +113,8 @@ Objetivo: dominio `sociedadparalela.com` en Vercel o Cloudflare Pages
 |---|---|
 | Estrategia, embudo, decisiones | `felo/comunidad/AGENTS.md` + `felo/wiki/` |
 | Manifiesto y narrativa | `felo/comunidad/manifesto.md` |
+| Research e ideas de posts | `felo/wiki/ideas/`, `felo/comunidad/docs/research/` |
+| Planeación de cursos (PRD, marketing) | `edtech/*/prd/` |
+| Posts y contenido terminado | **este repo** (`site/content/posts/`) |
 | Sitio desplegable | **este repo** (`site/`) |
-| Research externo | `felo/comunidad/docs/research/` (inmutable) |
+| Catálogo de cursos (contenido) | **este repo** (`cursos/`) |
