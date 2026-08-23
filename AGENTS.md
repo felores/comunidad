@@ -111,7 +111,7 @@ Objetivo: dominio `sociedadparalela.com` en Vercel o Cloudflare Pages
 
 - No meter frameworks ni build steps en `site/` sin aprobación.
 - No inventar claims sobre herramientas de la comunidad; las descripciones de
-  los módulos (Narrate, Picnode, KIE, Sinapso) deben rastrear a la realidad
+  los módulos (Narrate, Infinite Canvas, KIE, Sinapso) deben rastrear a la realidad
   de cada repo.
 - El vault sigue siendo el origen de la estrategia; el repo despliega.
 - Los posts no se escriben en el vault: nacen aquí en `site/content/posts/`.
