@@ -67,6 +67,10 @@ Estos cambios y archivos ya existían. No se deben atribuir a este trabajo, limp
 
 ### Implementación desplegable observada
 
+> Fotografía histórica del discovery del 2026-09-20. Para el estado implementado
+> actual usa `docs/design/status.yaml` y
+> `docs/design/implementation-evidence/free-community-p0-local-v0.1.md`.
+
 - `site/` contiene HTML autocontenido, sin build: `index.html`, `waitlist.html`, `countdown.html` y `landing-centro-operaciones.html`.
 - `site/content/posts/` contiene dos posts MDX, pero no existe una aplicación Astro que los renderice.
 - Las landings con captura usan `FORM_ENDPOINT = ""`; por tanto, hoy guardan email y fuente en `localStorage` bajo `sp_waitlist` cuando no hay endpoint.
@@ -74,7 +78,6 @@ Estos cambios y archivos ya existían. No se deben atribuir a este trabajo, limp
 - No existe integración de Remark42 implementada.
 - No existe backend de captura, identidad o sesión implementado en el código rastreado.
 - No existe integración de Hotmart implementada en el sitio rastreado.
-- El hosting final sigue pendiente entre Vercel y Cloudflare Pages.
 
 ### Trabajo local no integrado
 

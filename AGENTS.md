@@ -107,10 +107,12 @@ navegación) trata a todos los cursos con el mismo contrato.
 - Nunca nombrar el proveedor como parte del sistema; es un dato anotado y
   reemplazable.
 
-## Hosting
+## Runtime y despliegue
 
-Objetivo: dominio `sociedadparalela.com` en Vercel o Cloudflare Pages
-(estático, sin build). El deploy final está pendiente de decidir proveedor.
+Cuando una tarea afecte infraestructura, hosting, DNS, secretos, despliegue o
+producción, usa `docs/design/status.yaml` y el paquete vigente bajo
+`docs/design/implementation-readiness/` como autoridades. No dupliques aquí la
+topología o los proveedores, porque son decisiones operativas mutables.
 
 ## Reglas
 
