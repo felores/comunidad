@@ -1,0 +1,16 @@
+{
+  "macos": {
+    "featureId": "F100",
+    "status": "blocked",
+    "approvedAt": null,
+    "artifactVersion": null,
+    "evidence": null
+  },
+  "windows": {
+    "featureId": "F101",
+    "status": "blocked",
+    "approvedAt": null,
+    "artifactVersion": null,
+    "evidence": null
+  }
+}
