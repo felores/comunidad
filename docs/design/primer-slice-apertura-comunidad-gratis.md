@@ -36,7 +36,7 @@ Whop deja de ser una decisión de plataforma. Permanece únicamente como histori
 La precedencia para este slice es:
 
 1. `/Users/felo/Documents/FeloVault/felo/comunidad/AGENTS.md`: estrategia, embudo, comunidad gratuita, audiencia y objetivo comercial.
-2. `/Users/felo/Documents/FeloVault/felo/comunidad/sociedad-paralela/PRODUCT.md`: producto y restricciones de la experiencia pública. Su contrato de HTML autocontenido se interpreta como alcance de la landing documentada, no como prohibición permanente para la aplicación de comunidad ya decidida.
+2. `/Users/felo/Documents/GitHub/comunidad/PRODUCT.md`: producto y restricciones de la experiencia pública. Su contrato de HTML autocontenido se interpreta como alcance de la landing documentada, no como prohibición permanente para la aplicación de comunidad ya decidida.
 3. `/Users/felo/Documents/FeloVault/felo/comunidad/sociedad-paralela/DESIGN.md`: sistema visual candidato del recibo térmico. Sigue sin aprobación según el lifecycle.
 4. `AGENTS.md` del repositorio: contrato de implementación y contenido desplegado, incluido Astro + MDX, login propio y Remark42.
 5. `docs/design/status.yaml`: autoridad exclusiva de fase, aprobaciones, rutas mutables y autorización de implementación.

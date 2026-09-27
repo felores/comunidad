@@ -8,7 +8,7 @@ authority: docs/design/primer-slice-apertura-comunidad-gratis.md
 product_context:
   status: approved
   strategy_source: /Users/felo/Documents/FeloVault/felo/comunidad/AGENTS.md
-  product_source: /Users/felo/Documents/FeloVault/felo/comunidad/sociedad-paralela/PRODUCT.md
+  product_source: /Users/felo/Documents/GitHub/comunidad/PRODUCT.md
   architecture_source: docs/design/primer-slice-apertura-comunidad-gratis.md
 
 styleframes:

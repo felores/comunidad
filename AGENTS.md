@@ -14,10 +14,10 @@ La estrategia de comunidad y el embudo viven en el vault, no aquí:
 `felo/comunidad/AGENTS.md` es la autoridad de estrategia. Este repo es la
 verdad desplegada: sitio, posts y catálogo de cursos.
 
-Para Sociedad Paralela,
-`felo/comunidad/sociedad-paralela/PRODUCT.md` es la autoridad de producto y
-`felo/comunidad/sociedad-paralela/DESIGN.md` es la autoridad de diseño. Este
-repositorio conserva únicamente la implementación y el contenido desplegado.
+Para Sociedad Paralela, `PRODUCT.md` (raíz de este repo) es la autoridad de
+producto y `ROADMAP.md` (raíz) es el plan de producto, con el mismo contrato de
+los demás repos. El vault conserva
+`felo/comunidad/sociedad-paralela/DESIGN.md` como autoridad de diseño.
 
 ## Estructura
 
@@ -35,6 +35,8 @@ comunidad/
 │   │   ├── CONTENIDO.md
 │   │   └── modulos/
 │   └── _plantilla/           # Shape que todo curso nuevo copia
+├── PRODUCT.md               # Autoridad de producto (Sociedad Paralela)
+├── ROADMAP.md               # Plan de producto: outcomes y ciclo de vida
 ├── README.md
 └── AGENTS.md
 ```
@@ -129,6 +131,7 @@ topología o los proveedores, porque son decisiones operativas mutables.
 | Capa | Dónde vive |
 |---|---|
 | Estrategia, embudo, decisiones | `felo/comunidad/AGENTS.md` + `felo/wiki/` |
+| Producto y roadmap | **este repo** (`PRODUCT.md`, `ROADMAP.md`) |
 | Manifiesto y narrativa | `felo/comunidad/manifesto.md` |
 | Research e ideas de posts | `felo/wiki/ideas/`, `felo/comunidad/docs/research/` |
 | Planeación de cursos (PRD, marketing) | `edtech/*/prd/` |
