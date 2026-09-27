@@ -1,0 +1,43 @@
+---
+import AppLayout from "../layouts/AppLayout.astro";
+import AuthFormScript from "../components/AuthFormScript.astro";
+
+export const prerender = false;
+
+const params = Astro.url.searchParams;
+const attribution = {
+  source: params.get("source") ?? params.get("utm_source") ?? "",
+  campaign: params.get("campaign") ?? params.get("utm_campaign") ?? "",
+  content: params.get("content") ?? params.get("utm_content") ?? "",
+  leadMagnet: params.get("lead_magnet") ?? "",
+};
+---
+<AppLayout title="Crear cuenta" step="01 / Registro" description="Crea una cuenta gratuita de Sociedad Paralela.">
+  <h1>Abre tu cuenta gratis.</h1>
+  <p class="lede">Tu identidad vive aquí. No necesitas una cuenta de pagos para entrar a la comunidad.</p>
+  <form id="registration-form" class="form-grid" aria-describedby="registration-help" novalidate>
+    <div class="field">
+      <label for="name">Nombre</label>
+      <input id="name" name="name" autocomplete="name" required minlength="2" />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="password">Clave</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" required minlength="10" aria-describedby="password-help" />
+      <small id="password-help">Mínimo 10 caracteres.</small>
+    </div>
+    <input type="hidden" name="callbackURL" value="/cuenta-verificada" />
+    <input type="hidden" name="source" value={attribution.source} />
+    <input type="hidden" name="campaign" value={attribution.campaign} />
+    <input type="hidden" name="content" value={attribution.content} />
+    <input type="hidden" name="leadMagnet" value={attribution.leadMagnet} />
+    <button class="action" type="submit">Crear identidad</button>
+    <p id="registration-help">Sin teléfono. Sin pago. Una cuenta para leer y conversar.</p>
+    <p class="form-status" data-form-status data-state="idle" tabindex="-1" role="status" aria-live="polite"></p>
+  </form>
+  <p>¿Ya tienes cuenta? <a href="/ingresar">Ingresa aquí</a>.</p>
+  <AuthFormScript formId="registration-form" endpoint="/api/auth/sign-up/email" successPath="/verificacion-pendiente" genericMessage="Revisa tu correo para verificar la cuenta." />
+</AppLayout>

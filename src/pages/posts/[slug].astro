@@ -1,0 +1,28 @@
+---
+import AppLayout from "../../layouts/AppLayout.astro";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+
+export function getStaticPaths() {
+  const entries = Object.entries(import.meta.glob("../../../site/content/posts/*.mdx", { eager: true }));
+  return entries
+    .map(([path, module]) => {
+      const entry = module as { default: unknown; frontmatter: { title: string; status: string } };
+      return {
+        params: { slug: path.split("/").pop()!.replace(/\.mdx$/, "") },
+        props: { Content: entry.default, frontmatter: entry.frontmatter },
+      };
+    })
+    .filter((entry) => entry.props.frontmatter.status === "publicado");
+}
+
+const { Content, frontmatter } = Astro.props as {
+  Content: AstroComponentFactory;
+  frontmatter: { title: string; status: string };
+};
+---
+<AppLayout title={frontmatter.title} step="Publicación MDX">
+  <article class="prose">
+    <h1>{frontmatter.title}</h1>
+    <Content />
+  </article>
+</AppLayout>

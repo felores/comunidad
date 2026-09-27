@@ -1,0 +1,42 @@
+---
+import "@fontsource/dotgothic16/latin-400.css";
+import "../styles/app.css";
+
+interface Props {
+  title: string;
+  step?: string;
+  description?: string;
+}
+
+const { title, step = "Comunidad gratuita", description = "Sociedad Paralela" } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title} | Sociedad Paralela</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="machine" aria-label="Cabecera de Sociedad Paralela">
+      <a href="/">Sociedad Paralela</a>
+      <span class="machine__slot" aria-hidden="true"></span>
+      <span>{step}</span>
+    </header>
+    <main id="contenido" class="shell">
+      <section class="paper">
+        <header class="paper__head">
+          <span>Recibo de acceso</span>
+          <span>SP / Cuenta propia</span>
+        </header>
+        <slot />
+        <footer class="paper__footer">
+          <span>Dominio propio</span>
+          <span>Sin pago</span>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>

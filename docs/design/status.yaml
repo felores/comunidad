@@ -1,0 +1,331 @@
+version: 1
+updated_at: "2026-09-20"
+track: established-system
+phase: implementation
+current_artifact: free-community-p0-local-v0.1
+authority: docs/design/primer-slice-apertura-comunidad-gratis.md
+
+product_context:
+  status: approved
+  strategy_source: /Users/felo/Documents/FeloVault/felo/comunidad/AGENTS.md
+  product_source: /Users/felo/Documents/FeloVault/felo/comunidad/sociedad-paralela/PRODUCT.md
+  architecture_source: docs/design/primer-slice-apertura-comunidad-gratis.md
+
+styleframes:
+  status: approved
+  candidates:
+    - docs/design/styleframes/primer-slice-comunidad-gratis-v1.html
+    - /Users/felo/Documents/FeloVault/felo/comunidad/sociedad-paralela/recibo.html
+    - /Users/felo/Documents/GitHub/comunidad/site/waitlist.html
+  versioning:
+    current: v1
+    mutable_review_cycle: false
+    next_candidate: v1.x
+    freeze_next_replacement_on_approval: v2
+    frozen_integer_versions_are_immutable: true
+  approved: docs/design/styleframes/primer-slice-comunidad-gratis-v1.html
+
+approval_receipts:
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: docs/design/primer-slice-apertura-comunidad-gratis.md
+    decision: "APROBACIÓN HUMANA EXPLÍCITA: Felo aprueba docs/design/primer-slice-apertura-comunidad-gratis.md como arquitectura del primer slice y autoriza actualizar el lifecycle de discovery a styleframes. No autoriza implementación."
+    authorizes:
+      - phase-transition:discovery-to-styleframes
+      - isolated-styleframe-under-docs-design
+    does_not_authorize:
+      - production-implementation
+      - production-mutation
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: docs/design/styleframes/primer-slice-comunidad-gratis-v1.html
+    decision: "HUMAN GATE APPROVED: Felo aprueba el candidato completo v0.1 como dirección visual, lo congela como v1 y autoriza la transición de styleframes a design-system y la extracción de un seed bajo docs/design/**. No autoriza implementación."
+    authorizes:
+      - freeze-styleframe-v0.1-as-v1
+      - phase-transition:styleframes-to-design-system
+      - design-system-seed-under-docs-design
+    does_not_authorize:
+      - production-implementation
+      - site-or-runtime-mutation
+      - dependency-changes
+      - deployment-or-publication
+      - hotmart-integration
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: docs/design/design-system/primer-slice-comunidad-gratis-seed-v1.md
+    decision: "HUMAN GATE APPROVED: Felo aprueba el seed completo v0.1, lo congela como v1 y autoriza preparar un paquete de decisión para runtime, hosting y email transaccional. No autoriza implementación."
+    authorizes:
+      - freeze-design-system-seed-v0.1-as-v1
+      - implementation-readiness-decision-packet-under-docs-design
+    does_not_authorize:
+      - phase-transition-to-implementation
+      - production-implementation
+      - site-or-runtime-mutation
+      - dependency-changes
+      - deployment-or-publication
+      - dns-or-secret-mutation
+      - hotmart-integration
+      - commit-or-push
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: https://v0-sociedad-paralela.vercel.app
+    decision: "HUMAN STYLE DIRECTION: use the Vercel deployment only as visual DNA for a landing-specific green-tinted proposal. Preserve the approved application v1 artifacts and stop at Human Gate."
+    authorizes:
+      - lp-visual-dna-reference-under-docs-design
+      - isolated-lp-styleframe-under-docs-design
+      - landing-specific-design-system-delta-under-docs-design
+    does_not_authorize:
+      - approval-of-lp-styleframe
+      - production-implementation
+      - changes-to-approved-application-v1
+      - site-or-runtime-mutation
+      - dependency-changes
+      - deployment-or-publication
+      - hotmart-integration
+      - commit-or-push
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: docs/design/implementation-readiness/primer-slice-comunidad-gratis-v0.1.md
+    decision: "HUMAN DECISION APPROVED: reusar el Directus existente de AOS/Markenética como control plane de Sociedad Paralela, aislado mediante colecciones sp_*, identidad de servicio y políticas de mínimo privilegio; Astro es la única frontera pública; MDX conserva los cuerpos canónicos. No crear otro Directus. No autoriza implementación."
+    authorizes:
+      - single-directus-separated-control-plane
+      - dedicated-sp-collections-and-policies-in-plan
+      - directus-data-studio-as-internal-admin-plan
+    does_not_authorize:
+      - production-implementation
+      - live-directus-schema-or-policy-mutation
+      - public-registration-or-global-email-configuration
+      - site-or-runtime-mutation
+      - infrastructure-or-secret-mutation
+      - deployment-or-publication
+      - hotmart-integration
+      - commit-or-push
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: docs/design/styleframes/lp-green-v1.html
+    decision: "HUMAN GATE APPROVED: Felo aprueba el paquete completo lp-green-v0.1 para la landing pública con tinte verde al 10%, Geist Sans para display y cuerpo, Geist Mono solo para metadata y abstracción estática como base obligatoria. Congela el styleframe como lp-green-v1 y el delta como lp-green-delta-v1. No autoriza implementación."
+    authorizes:
+      - freeze-lp-green-v0.1-as-v1
+      - freeze-lp-green-delta-v0.1-as-v1
+      - landing-page-style-status-approved
+    does_not_authorize:
+      - changes-to-approved-application-v1
+      - production-implementation
+      - site-or-runtime-mutation
+      - dependency-changes
+      - canvas-or-webgl
+      - deployment-dns-or-publication
+      - hotmart-integration
+      - commit-or-push
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: docs/design/implementation-readiness/primer-slice-comunidad-gratis-v0.1.md
+    decision: "HUMAN ARCHITECTURE DECISIONS APPROVED: Felo aprueba RUNTIME-H1, AUTH-B1 y EMAIL-E1 para el P0. Astro Node y Remark42 vivirán como servicios aislados en neo4j mediante Coolify y Traefik; Astro usará https://aos.markenetica.com server-to-server; Better Auth guardará credenciales y sesiones en PostgreSQL aislado; Resend enviará verificación y reset desde Astro. Esta aprobación aún no autoriza implementación."
+    authorizes:
+      - runtime-h1-existing-neo4j-coolify-traefik
+      - auth-b1-better-auth-isolated-postgresql
+      - email-e1-resend-from-astro
+      - p0-directus-transport-existing-aos-https
+    does_not_authorize:
+      - implementation-before-separate-authorization
+      - live-directus-schema-or-policy-mutation
+      - secrets-or-provider-setup
+      - infrastructure-dns-deploy-or-publication
+      - payment-or-hotmart-work
+      - commit-or-push
+  - date: "2026-09-20"
+    approver: Felo
+    artifact: docs/design/status.yaml
+    decision: "HUMAN IMPLEMENTATION AUTHORIZATION: Felo autoriza la implementación local y acotada del P0 en este repositorio, incluida la UI aprobada, Astro, Better Auth, adapters server-side sp_* y preparación de Resend y Remark42 con pruebas enfocadas. La implementación debe ejecutarse en otra tarjeta del Board."
+    authorizes:
+      - phase-transition:design-system-to-implementation
+      - implementation-authorized:true
+      - local-product-runtime-and-dependency-implementation
+      - approved-landing-and-application-ui
+      - better-auth-integration
+      - server-side-sp-control-plane-adapters
+      - prepared-resend-and-remark42-integration
+      - focused-local-tests
+    does_not_authorize:
+      - live-directus-schema-or-policy-mutation
+      - real-secrets
+      - resend-domain-or-api-setup
+      - coolify-dns-or-infrastructure-changes
+      - deploy-or-publication
+      - external-traffic
+      - payment-or-hotmart-work
+      - commit-or-push
+
+design_system:
+  status: approved
+  current_artifact: docs/design/design-system/primer-slice-comunidad-gratis-seed-v1.md
+  source: approved-styleframe
+  approved_visual_target: docs/design/styleframes/primer-slice-comunidad-gratis-v1.html
+  reference: /Users/felo/Documents/FeloVault/felo/comunidad/sociedad-paralela/DESIGN.md
+  versioning:
+    current: v1
+    mutable_review_cycle: false
+    next_candidate: v1.x
+    freeze_next_replacement_on_approval: v2
+    frozen_integer_versions_are_immutable: true
+  approved: docs/design/design-system/primer-slice-comunidad-gratis-seed-v1.md
+
+landing_page_style:
+  status: approved
+  scope: public-landing-only
+  source_reference: https://v0-sociedad-paralela.vercel.app
+  source_policy: visual-dna-only
+  current_artifact: docs/design/styleframes/lp-green-v1.html
+  reference_artifact: docs/design/references/lp-vercel-visual-dna-v0.1.md
+  delta_artifact: docs/design/design-system/lp-green-delta-v1.md
+  decision_packet: docs/design/decisions/lp-green-v0.1-human-gate.md
+  approved:
+    styleframe: docs/design/styleframes/lp-green-v1.html
+    delta: docs/design/design-system/lp-green-delta-v1.md
+  application_styleframe_unchanged: docs/design/styleframes/primer-slice-comunidad-gratis-v1.html
+  application_seed_unchanged: docs/design/design-system/primer-slice-comunidad-gratis-seed-v1.md
+  versioning:
+    current: v1
+    mutable_review_cycle: false
+    next_candidate: v1.x
+    freeze_next_replacement_on_approval: v2
+    frozen_integer_versions_are_immutable: true
+  next_legal_transition:
+    requires: separate-board-card-for-local-p0-implementation
+    from: lp-style-approved
+    to: lp-local-implementation
+
+implementation_readiness:
+  status: approved
+  current_artifact: docs/design/implementation-readiness/primer-slice-comunidad-gratis-v0.1.md
+  recommended_decisions:
+    runtime_hosting: RUNTIME-H1
+    runtime_topology: existing-neo4j-coolify-traefik
+    p0_directus_transport: existing-aos-https-server-to-server
+    identity_auth: AUTH-B1
+    transactional_email: EMAIL-E1
+  approved_decisions:
+    control_plane: single-directus-separated-control-plane
+    runtime_hosting: RUNTIME-H1
+    runtime_topology: existing-neo4j-coolify-traefik
+    p0_directus_transport: existing-aos-https-server-to-server
+    identity_auth: AUTH-B1
+    transactional_email: EMAIL-E1
+
+prototype:
+  permitted: true
+  isolation_path: .scratchpad/prototypes
+  production_mutation: false
+  current: null
+
+stack:
+  application: astro-static-first-with-on-demand-routes
+  content: mdx
+  styling: approved-design-system-seed-v1
+  interaction: html-and-minimal-js-svelte-not-approved
+  comments: remark42-sso
+  control_plane: existing-aos-directus-with-sp-isolation
+  identity_auth: better-auth-isolated-postgresql
+  runtime_hosting: existing-neo4j-coolify-traefik
+  p0_directus_transport: existing-aos-https-server-to-server
+  transactional_email: resend-from-astro
+
+implementation_authorized: true
+
+implementation_evidence:
+  status: local-rollout-preconditions-accepted
+  artifact: docs/design/implementation-evidence/free-community-p0-local-v0.1.md
+  focused_proof: npx vitest run tests/behavior/remark42.test.ts
+  final_gate: npm run gate
+  observed:
+    previous_local_gate: superseded-by-independent-failure
+    previous_independent_verification: failed-missing-remark42-user-aud-and-same-origin-proxy
+    repair_decision: repair-remark42-sso
+    remark42_focused_proof: 1-file-2-tests-passed
+    remark42_pinned_container_integration: passed-real-user-via-same-origin-proxy
+    remark42_identity_provider: better-auth-oauth-provider-real-custom-provider
+    proxy_session_boundary: authorization-and-unrelated-cookies-stripped-response-cookies-path-scoped
+    astro_check: 0-errors-0-warnings-0-hints-49-files
+    astro_build: passed-static-first-node-output
+    browser_output_scan: passed
+    compose_validation: passed
+    playwright: 2-passed-clean-browser-diagnostics
+    independent_verification: pass-local-p0-card-23-superseded-for-live-rollout
+    rollout_readiness_finding: ensure-member-409-race-needs-local-repair-and-new-verification
+    rollout_packet_verification: failed-runs-175-178-and-183
+    rollout_packet_findings:
+      - remark42-session-remains-usable-after-better-auth-logout-or-reset
+      - container-private-tmpfs-cannot-cross-oauth-gates
+      - oauth-handoff-paths-fd3-entrypoint-and-coolify-api-base-were-incomplete
+      - consumer-mount-mode-and-cross-namespace-binding-proof-were-contradictory
+    local_repair_date: "2026-09-26"
+    local_behavior_tests: 20-passed-across-7-files
+    local_gate: passed-after-rollout-precondition-repairs
+    real_invalidation_journey: passed-logout-reset-stale-cookie-jars-sso-and-proxy
+    oauth_jobs: bundled-executable-under-app-ops-without-tsx
+    oauth_deadline_and_cleanup: passed-focused-and-runtime-tests
+    oauth_runtime_handoff: passed-exact-uids-gids-fifo-modes-shared-tmpfs-and-bounded-open
+    oauth_real_provisioning: passed-success-retention-failure-deletion-and-session-revocation
+    base_image_linux_amd64_digest: sha256:764fa18a0649c8682db1a580ce075d8662b6fb0eb2f05221af2d13f2ff43c383
+    local_candidate_image_id: sha256:4cb827a5a1972426ebbbd08e9afd354467c97564010875074f09e849b695ab3d
+    local_candidate_image_size_bytes: 136623639
+    local_sbom: spdx-2.3-519-packages-1148-relationships
+    second_independent_verification: failed-logout-manifest-ready-gid-blocking-open-and-allowlist
+    third_independent_verification: failed-missing-real-oauth-cleanup-integration
+    fourth_independent_verification: passed-four-local-preconditions-no-p0-or-p1
+    fresh_independent_verification: passed
+  does_not_prove:
+    - live-directus-schema-or-negative-policies
+    - real-resend-delivery
+    - live-remark42-sso
+    - live-immediate-remark42-invalidation-after-logout-or-reset
+    - coolify-traefik-dns-or-host-limits
+    - production-readiness
+
+live_rollout_readiness:
+  status: local-preconditions-accepted-live-human-gates-pending
+  artifact: docs/design/implementation-readiness/free-community-live-rollout-v0.1.md
+  latest_failed_verification: run-183
+  latest_independent_verification: passed-four-local-preconditions-no-p0-or-p1
+  latest_repair_decision: repair-handoff-mount-and-binding-proof
+  protected_stages:
+    - directus-control-plane
+    - better-auth-postgresql
+    - resend-domain-and-delivery
+    - remark42-oauth-and-sso
+    - coolify-traefik-dns-tls
+    - smoke-test
+    - traffic-enablement
+    - rollback
+  does_not_authorize:
+    - live-mutation
+    - secrets
+    - deployment
+    - publication
+    - external-traffic
+
+mutation_policy:
+  authorized_local_work:
+    - product-runtime-and-dependencies
+    - approved-landing-and-application-ui
+    - better-auth-integration
+    - server-side-sp-control-plane-adapters
+    - prepared-resend-and-remark42-integration
+    - focused-local-tests
+  blocked_without_separate_gate:
+    - live-directus-schema-or-policy-mutation
+    - real-secrets-or-provider-setup
+    - coolify-dns-or-infrastructure-changes
+    - deploy-or-publication
+    - external-traffic
+    - payment-or-hotmart-work
+    - commit-or-push
+
+known_exceptions:
+  - Existing vault and repository landings are candidate evidence, not approval.
+
+next_legal_transition:
+  requires:
+    - explicit-human-authorization-for-next-live-gate
+  from: local-preconditions-accepted
+  to: focused-human-gates-in-live-rollout-packet

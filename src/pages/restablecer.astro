@@ -1,0 +1,44 @@
+---
+import AppLayout from "../layouts/AppLayout.astro";
+
+export const prerender = false;
+const token = Astro.url.searchParams.get("token") ?? "";
+---
+<AppLayout title="Restablecer clave" step="Nueva clave">
+  <h1>Define una clave nueva.</h1>
+  {token ? (
+    <form id="password-reset-form" class="form-grid" novalidate>
+      <div class="field">
+        <label for="new-password">Clave nueva</label>
+        <input id="new-password" name="newPassword" type="password" autocomplete="new-password" required minlength="10" />
+      </div>
+      <input type="hidden" name="token" value={token} />
+      <button class="action" type="submit">Guardar clave</button>
+      <p class="form-status" data-form-status data-state="idle" tabindex="-1" role="status" aria-live="polite"></p>
+    </form>
+  ) : (
+    <div class="state-ticket state-ticket--error"><p>El enlace no incluye un token válido. Solicita uno nuevo.</p></div>
+  )}
+  <script>
+    const form = document.getElementById("password-reset-form") as HTMLFormElement | null;
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = form.querySelector<HTMLElement>("[data-form-status]");
+      const button = form.querySelector<HTMLButtonElement>("button");
+      if (!status || !button) return;
+      const data = Object.fromEntries(new FormData(form).entries());
+      button.disabled = true;
+      status.textContent = "Procesando...";
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) return window.location.assign("/ingresar?reset=ok");
+      status.dataset.state = "error";
+      status.textContent = "El enlace no es válido o ya venció.";
+      button.disabled = false;
+      status.focus();
+    });
+  </script>
+</AppLayout>

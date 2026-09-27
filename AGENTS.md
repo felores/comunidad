@@ -14,6 +14,11 @@ La estrategia de comunidad y el embudo viven en el vault, no aquí:
 `felo/comunidad/AGENTS.md` es la autoridad de estrategia. Este repo es la
 verdad desplegada: sitio, posts y catálogo de cursos.
 
+Para Sociedad Paralela,
+`felo/comunidad/sociedad-paralela/PRODUCT.md` es la autoridad de producto y
+`felo/comunidad/sociedad-paralela/DESIGN.md` es la autoridad de diseño. Este
+repositorio conserva únicamente la implementación y el contenido desplegado.
+
 ## Estructura
 
 ```text

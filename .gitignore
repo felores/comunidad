@@ -1,2 +1,14 @@
 node_modules/
 .DS_Store
+.astro/
+dist/
+dist-ops/
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+.local-email*/
+.scratchpad/
+.harness/*.pid
+.harness/logs/

@@ -1,0 +1,11 @@
+---
+import AppLayout from "../../layouts/AppLayout.astro";
+export const prerender = false;
+Astro.response.status = 403;
+---
+<AppLayout title="Consentimiento no disponible" step="OAuth / Bloqueado">
+  <div class="state-ticket state-ticket--error">
+    <h1>Solicitud no autorizada.</h1>
+    <p>El cliente Remark42 aprobado omite consentimiento porque pertenece a Sociedad Paralela. Cualquier otro cliente falla cerrado.</p>
+  </div>
+</AppLayout>

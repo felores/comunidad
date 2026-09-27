@@ -1,0 +1,52 @@
+name: sociedad-paralela-local
+
+services:
+  auth-db:
+    image: postgres:17.6-alpine3.22
+    environment:
+      POSTGRES_DB: sp_auth
+      POSTGRES_USER: sp_auth
+      POSTGRES_PASSWORD: ${LOCAL_AUTH_DB_PASSWORD:-local-only-change-me}
+    ports:
+      - "127.0.0.1:${LOCAL_AUTH_DB_PORT:-54329}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sp_auth -d sp_auth"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - sp-auth-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  remark42:
+    profiles: ["comments"]
+    image: ghcr.io/umputun/remark42:v1.16.4
+    environment:
+      REMARK_URL: http://localhost:4321/comentarios
+      SITE: sociedad-paralela
+      SECRET: ${REMARK42_SECRET:-local-remark42-secret-change-before-use}
+      AUTH_ANON: "false"
+      AUTH_CUSTOM_NAME: sociedad-paralela
+      AUTH_CUSTOM_CID: ${REMARK42_OAUTH_CLIENT_ID:-}
+      AUTH_CUSTOM_CSEC: ${REMARK42_OAUTH_CLIENT_SECRET:-}
+      AUTH_CUSTOM_AUTH_URL: http://localhost:4321/api/auth/oauth2/authorize
+      AUTH_CUSTOM_TOKEN_URL: http://localhost:4321/api/auth/oauth2/token
+      AUTH_CUSTOM_INFO_URL: http://localhost:4321/api/auth/oauth2/userinfo
+      AUTH_CUSTOM_SCOPES: openid,profile
+      AUTH_CUSTOM_ID_FIELD: sub
+      AUTH_CUSTOM_NAME_FIELD: name
+      AUTH_CUSTOM_PICTURE_FIELD: picture
+    ports:
+      - "127.0.0.1:${LOCAL_REMARK42_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - sp-remark42-data:/srv/var
+    restart: unless-stopped
+
+volumes:
+  sp-auth-data:
+  sp-remark42-data:

@@ -1,0 +1,32 @@
+---
+import AppLayout from "../layouts/AppLayout.astro";
+import AuthFormScript from "../components/AuthFormScript.astro";
+
+export const prerender = false;
+const next = Astro.url.searchParams.get("next");
+const oauthContinuation = Astro.url.searchParams.has("client_id") && Astro.url.searchParams.has("sig")
+  ? `/api/auth/oauth2/authorize?${Astro.url.searchParams.toString()}`
+  : null;
+const successPath = oauthContinuation ?? (next?.startsWith("/") && !next.startsWith("//") ? next : "/comunidad");
+---
+<AppLayout title="Ingresar" step="Acceso">
+  <h1>Vuelve a tu identidad.</h1>
+  <p class="lede">La sesión usa una cookie segura del servidor. Tu clave nunca llega al control plane de la comunidad.</p>
+  <form id="login-form" class="form-grid" novalidate>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="password">Clave</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required />
+    </div>
+    <button class="action" type="submit">Ingresar</button>
+    <p class="form-status" data-form-status data-state="idle" tabindex="-1" role="status" aria-live="polite"></p>
+  </form>
+  <div class="actions">
+    <a class="action action--secondary" href="/registro">Crear cuenta</a>
+    <a class="action action--secondary" href="/recuperar">Olvidé mi clave</a>
+  </div>
+  <AuthFormScript formId="login-form" endpoint="/api/auth/sign-in/email" successPath={successPath} />
+</AppLayout>

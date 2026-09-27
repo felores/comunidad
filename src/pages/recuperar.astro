@@ -1,0 +1,20 @@
+---
+import AppLayout from "../layouts/AppLayout.astro";
+import AuthFormScript from "../components/AuthFormScript.astro";
+
+export const prerender = false;
+---
+<AppLayout title="Recuperar acceso" step="Recuperación">
+  <h1>Recupera tu acceso.</h1>
+  <p class="lede">Si el email corresponde a una cuenta, recibirás un enlace de recuperación. La respuesta no confirma si la cuenta existe.</p>
+  <form id="reset-request-form" class="form-grid" novalidate>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <input type="hidden" name="redirectTo" value="/restablecer" />
+    <button class="action" type="submit">Solicitar enlace</button>
+    <p class="form-status" data-form-status data-state="idle" tabindex="-1" role="status" aria-live="polite"></p>
+  </form>
+  <AuthFormScript formId="reset-request-form" endpoint="/api/auth/request-password-reset" successPath="/recuperacion-solicitada" genericMessage="Si existe una cuenta, enviamos las instrucciones." />
+</AppLayout>

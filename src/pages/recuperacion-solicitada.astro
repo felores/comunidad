@@ -1,0 +1,9 @@
+---
+import AppLayout from "../layouts/AppLayout.astro";
+export const prerender = false;
+---
+<AppLayout title="Solicitud recibida" step="Recuperación">
+  <h1>Revisa tu correo.</h1>
+  <p class="lede">Si existe una cuenta para ese email, enviamos un enlace. Esta respuesta es igual para todos los intentos.</p>
+  <a class="action" href="/ingresar">Volver al ingreso</a>
+</AppLayout>

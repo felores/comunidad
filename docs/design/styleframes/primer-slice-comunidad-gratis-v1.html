@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Styleframe v1 | Primer slice de Sociedad Paralela</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: oklch(10.5% 0.010 150);
+      --paper: oklch(16% 0.016 150);
+      --paper-2: oklch(19.5% 0.016 150);
+      --ink: oklch(87% 0.200 149);
+      --ink-dim: oklch(74% 0.160 149);
+      --ink-2: oklch(64% 0.130 149);
+      --rule: oklch(38% 0.070 149);
+      --error: oklch(68% 0.210 25);
+      --slot: oklch(7% 0.008 150);
+      --slot-2: oklch(20% 0.020 150);
+      --font: "DotGothic16", "Courier New", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--page); }
+
+    body {
+      margin: 0;
+      min-width: 20rem;
+      color: var(--ink);
+      background:
+        linear-gradient(rgb(255 255 255 / 0.018) 1px, transparent 1px) 0 0 / 100% 4px,
+        var(--page);
+      font-family: var(--font);
+      font-size: 1.125rem;
+      line-height: 1.55;
+    }
+
+    button,
+    input { font: inherit; }
+
+    .machine {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      min-height: 3.5rem;
+      padding: 0.6rem clamp(1rem, 3vw, 2rem);
+      border-bottom: 1px solid var(--rule);
+      background: var(--slot-2);
+      box-shadow: 0 12px 28px rgb(0 0 0 / 0.65);
+    }
+
+    .machine__label,
+    .machine__state {
+      color: var(--ink-dim);
+      font-size: 0.875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .machine__state { justify-self: end; }
+
+    .machine__slot {
+      width: min(30rem, 42vw);
+      height: 0.65rem;
+      border: 1px solid var(--rule);
+      background: var(--slot);
+      box-shadow: inset 0 3px 6px rgb(0 0 0 / 0.95), 0 1px 0 oklch(23% 0.026 149);
+    }
+
+    main {
+      width: min(92rem, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: clamp(2rem, 5vw, 4.5rem) 0 4rem;
+    }
+
+    .artifact-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 2.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px dashed var(--rule);
+    }
+
+    .artifact-header__eyebrow,
+    .frame__step,
+    .section-label,
+    .meta {
+      color: var(--ink-dim);
+      font-size: 0.875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p { margin: 0; }
+
+    h1 {
+      max-width: 18ch;
+      margin-top: 0.35rem;
+      font-size: clamp(2rem, 5vw, 3.35rem);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .artifact-header__note {
+      max-width: 34ch;
+      color: var(--ink-2);
+      font-size: 1rem;
+      text-align: right;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(15rem, 1fr));
+      gap: 1.15rem;
+      align-items: start;
+      overflow-x: auto;
+      padding: 0 0.25rem 1.5rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    .frame {
+      position: relative;
+      min-width: 15rem;
+      min-height: 41rem;
+      padding: 2rem clamp(1.1rem, 2vw, 1.55rem) 2.4rem;
+      overflow: hidden;
+      color: var(--ink);
+      background: var(--paper);
+      box-shadow: 0 18px 50px rgb(0 0 0 / 0.5);
+      scroll-snap-align: start;
+    }
+
+    .frame::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 14px;
+      background:
+        linear-gradient(135deg, transparent 50%, var(--page) 51%) 0 0 / 14px 14px,
+        linear-gradient(225deg, transparent 50%, var(--page) 51%) 7px 0 / 14px 14px;
+      content: "";
+    }
+
+    .frame__head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dashed var(--rule);
+    }
+
+    .frame__number {
+      color: var(--ink-2);
+      font-size: 0.875rem;
+    }
+
+    .frame h2 {
+      margin: 1.5rem 0 0.55rem;
+      font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+      font-weight: 400;
+      line-height: 1.08;
+      text-transform: uppercase;
+    }
+
+    .lede {
+      min-height: 4.8rem;
+      color: var(--ink-dim);
+      font-size: 1.125rem;
+    }
+
+    .rule {
+      margin: 1.4rem 0;
+      overflow: hidden;
+      color: var(--rule);
+      white-space: nowrap;
+    }
+
+    .field { margin-top: 1rem; }
+
+    .field label {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--ink-2);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 0.3rem 0.15rem;
+      border: 0;
+      border-bottom: 2px dotted var(--rule);
+      border-radius: 0;
+      color: var(--ink);
+      background: transparent;
+      font-size: 1.125rem;
+      opacity: 1;
+      -webkit-text-fill-color: var(--ink);
+    }
+
+    .cta {
+      width: 100%;
+      margin-top: 1.4rem;
+      padding: 0.7rem 1ch;
+      border: 0;
+      border-radius: 0;
+      color: var(--slot);
+      background: var(--ink);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .fine-print {
+      margin-top: 0.7rem;
+      color: var(--ink-2);
+      font-size: 1rem;
+    }
+
+    .identity-ticket,
+    .message,
+    .mdx-card {
+      margin-top: 1.1rem;
+      padding: 0.85rem;
+      border: 2px dashed var(--rule);
+      background: var(--paper-2);
+    }
+
+    .identity-ticket strong,
+    .message strong { font-weight: 400; }
+
+    .status-block {
+      margin-top: 1.4rem;
+      padding: 0.9rem;
+      color: var(--slot);
+      background: var(--ink);
+    }
+
+    .status-block .section-label { color: var(--slot); }
+
+    .code {
+      margin-top: 1rem;
+      font-size: 1.45rem;
+      letter-spacing: 0.32em;
+      text-align: center;
+    }
+
+    .mdx-card h3 {
+      margin: 0.35rem 0 0.65rem;
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .mdx-card p,
+    .message p { color: var(--ink-dim); font-size: 1.125rem; }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.7rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px dotted var(--rule);
+      color: var(--ink-dim);
+      font-size: 1rem;
+    }
+
+    .avatar {
+      display: inline-grid;
+      width: 1.8rem;
+      height: 1.8rem;
+      margin-right: 0.5rem;
+      place-items: center;
+      color: var(--slot);
+      background: var(--ink);
+      vertical-align: middle;
+    }
+
+    .composer {
+      margin-top: 1rem;
+      padding: 0.8rem;
+      border-bottom: 2px dotted var(--rule);
+      color: var(--ink-2);
+      background: var(--paper-2);
+      font-size: 1.125rem;
+    }
+
+    .frame__footer {
+      position: absolute;
+      right: 1.3rem;
+      bottom: 2rem;
+      left: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      color: var(--ink-2);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.2rem;
+      border-top: 2px dashed var(--rule);
+      color: var(--ink-2);
+      font-size: 1rem;
+    }
+
+    .legend strong { color: var(--ink-dim); font-weight: 400; }
+
+    @media (max-width: 52rem) {
+      .machine { grid-template-columns: 1fr auto; }
+      .machine__slot { display: none; }
+      .artifact-header { grid-template-columns: 1fr; }
+      .artifact-header__note { text-align: left; }
+      .flow { grid-template-columns: repeat(4, minmax(17rem, 78vw)); }
+      .legend { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="machine" aria-label="Cabecera del artefacto de diseño">
+    <span class="machine__label">Sociedad Paralela / Styleframe v1</span>
+    <span class="machine__slot" aria-hidden="true"></span>
+    <span class="machine__state">No producción</span>
+  </header>
+
+  <main>
+    <header class="artifact-header">
+      <div>
+        <p class="artifact-header__eyebrow">Recibo de acceso / Comunidad gratuita</p>
+        <h1>Una identidad. Cuatro momentos.</h1>
+      </div>
+      <p class="artifact-header__note">Primer lenguaje visual candidato para registro, verificación, contenido MDX y conversación con SSO.</p>
+    </header>
+
+    <section class="flow" aria-label="Flujo visual del primer slice">
+      <article class="frame" aria-labelledby="frame-register">
+        <header class="frame__head">
+          <span class="frame__step">01 / Registro</span>
+          <span class="frame__number">SP-0001</span>
+        </header>
+        <h2 id="frame-register">Abre tu cuenta gratis.</h2>
+        <p class="lede">Tu identidad vive aquí. No necesitas una cuenta de pagos para entrar a la comunidad.</p>
+        <p class="rule" aria-hidden="true">--------------------------------</p>
+        <form aria-label="Representación estática del registro">
+          <div class="field">
+            <label for="name">Nombre</label>
+            <input id="name" value="Ada Builder" disabled>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" value="ada@ejemplo.com" disabled>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" value="un-password-seguro" disabled>
+          </div>
+          <div class="cta">Crear identidad</div>
+          <p class="fine-print">Sin teléfono. Sin pago. Una cuenta para leer y conversar.</p>
+        </form>
+        <footer class="frame__footer"><span>dominio propio</span><span>gratis</span></footer>
+      </article>
+
+      <article class="frame" aria-labelledby="frame-verify">
+        <header class="frame__head">
+          <span class="frame__step">02 / Verificación</span>
+          <span class="frame__number">SP-0001</span>
+        </header>
+        <h2 id="frame-verify">Confirma que eres tú.</h2>
+        <p class="lede">El correo conecta tu cuenta, tu participación y una compra futura, sin exponer tu dirección.</p>
+        <div class="status-block">
+          <p class="section-label">Estado de identidad</p>
+          <p>EMAIL ENVIADO</p>
+        </div>
+        <div class="identity-ticket">
+          <p class="section-label">Destino</p>
+          <p>a•••@ejemplo.com</p>
+          <p class="code">841 203</p>
+          <p class="fine-print">Código representativo. La experiencia final puede usar enlace seguro.</p>
+        </div>
+        <p class="rule" aria-hidden="true">--------------------------------</p>
+        <div class="cta">Verificar email</div>
+        <div class="item-row"><span>Cuenta</span><span>Creada</span></div>
+        <div class="item-row"><span>Conversación</span><span>Bloqueada</span></div>
+        <div class="item-row"><span>Pago</span><span>No requerido</span></div>
+        <footer class="frame__footer"><span>mismo user_id</span><span>paso 2/4</span></footer>
+      </article>
+
+      <article class="frame" aria-labelledby="frame-welcome">
+        <header class="frame__head">
+          <span class="frame__step">03 / Bienvenida MDX</span>
+          <span class="frame__number">SP-0001</span>
+        </header>
+        <h2 id="frame-welcome">Ya estás dentro.</h2>
+        <p class="lede">El contenido vive en archivos MDX versionados. Tu cuenta decide qué puedes hacer, no qué proveedor usas.</p>
+        <div class="identity-ticket">
+          <p class="section-label">Identidad activa</p>
+          <p><span class="avatar" aria-hidden="true">AB</span>Ada Builder</p>
+          <p class="fine-print">Email verificado / Comunidad general</p>
+        </div>
+        <article class="mdx-card">
+          <p class="meta">post.mdx / inicio</p>
+          <h3>Empieza por poseer tu contexto</h3>
+          <p>Una comunidad para construir infraestructura propia, compartir implementaciones y aprender sin depender de una sola plataforma.</p>
+          <div class="item-row"><span>Lectura</span><span>4 min</span></div>
+          <div class="item-row"><span>Acceso</span><span>Gratis</span></div>
+        </article>
+        <div class="cta">Abrir conversación</div>
+        <footer class="frame__footer"><span>contenido MDX</span><span>paso 3/4</span></footer>
+      </article>
+
+      <article class="frame" aria-labelledby="frame-conversation">
+        <header class="frame__head">
+          <span class="frame__step">04 / Conversación</span>
+          <span class="frame__number">SP-0001</span>
+        </header>
+        <h2 id="frame-conversation">Habla con la misma identidad.</h2>
+        <p class="lede">Remark42 recibe una sesión firmada. No crea otra cuenta visible y nunca publica tu email.</p>
+        <div class="identity-ticket">
+          <p class="section-label">Sesión de conversación</p>
+          <p><span class="avatar" aria-hidden="true">AB</span>Ada Builder</p>
+          <p class="fine-print">SSO activo / Email oculto</p>
+        </div>
+        <div class="message">
+          <strong>Felo / anfitrión</strong>
+          <p>¿Qué parte de tu stack quieres recuperar primero?</p>
+        </div>
+        <div class="message">
+          <strong>Ada Builder</strong>
+          <p>Mi contexto. Está repartido entre chats, carpetas y herramientas.</p>
+        </div>
+        <div class="composer">Escribe desde tu identidad...</div>
+        <div class="cta">Publicar comentario</div>
+        <footer class="frame__footer"><span>Remark42 SSO</span><span>paso 4/4</span></footer>
+      </article>
+    </section>
+
+    <aside class="legend" aria-label="Notas del styleframe">
+      <p><strong>Lenguaje:</strong> recibo térmico oscuro, una sola tinta expresiva, sin cards SaaS ni estética de terminal.</p>
+      <p><strong>Identidad:</strong> el mismo `user_id` atraviesa registro, contenido y conversación. El email nunca es nombre público.</p>
+      <p><strong>Frontera:</strong> este flujo abre la comunidad gratis. Cursos y pagos quedan fuera y no condicionan el acceso.</p>
+    </aside>
+  </main>
+</body>
+</html>

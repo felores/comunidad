@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ops
+.git
+.env
+.env.*
+.local-email
+test-results
+playwright-report
+.scratchpad

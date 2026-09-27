@@ -1,0 +1,26 @@
+---
+import AppLayout from "../../layouts/AppLayout.astro";
+
+const posts = Object.entries(import.meta.glob("../../../site/content/posts/*.mdx", { eager: true }))
+  .map(([path, module]) => {
+    const entry = module as { frontmatter: { title: string; publishDate: string | Date; status: string } };
+    return {
+      slug: path.split("/").pop()!.replace(/\.mdx$/, ""),
+      ...entry.frontmatter,
+    };
+  })
+  .filter((post) => post.status === "publicado")
+  .sort((a, b) => String(b.publishDate).localeCompare(String(a.publishDate)));
+---
+<AppLayout title="Publicaciones" step="Contenido MDX">
+  <h1>Publicaciones.</h1>
+  <p class="lede">Los cuerpos editoriales salen de archivos MDX versionados en este repositorio.</p>
+  {posts.length ? posts.map((post) => (
+    <article class="content-ticket">
+      <p class="meta">{String(post.publishDate)}</p>
+      <h2><a href={`/posts/${post.slug}`}>{post.title}</a></h2>
+    </article>
+  )) : (
+    <div class="state-ticket"><p>Aún no hay publicaciones marcadas como publicadas.</p></div>
+  )}
+</AppLayout>

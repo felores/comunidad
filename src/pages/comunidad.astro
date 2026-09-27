@@ -1,0 +1,79 @@
+---
+import AppLayout from "../layouts/AppLayout.astro";
+import Welcome from "../../site/content/community/bienvenida.mdx";
+import { getAuth } from "../server/auth";
+import { authorizeCommunity, type SessionSubject } from "../server/authorization";
+import { getMembershipControlPlane } from "../server/control-plane";
+import { createRemark42Session } from "../server/remark42";
+
+export const prerender = false;
+
+const session = await getAuth().api.getSession({ headers: Astro.request.headers });
+type SessionUser = NonNullable<typeof session>["user"] & Record<string, unknown>;
+const rawUser = session?.user as SessionUser | undefined;
+const subject: SessionSubject | null = rawUser ? {
+  id: rawUser.id,
+  email: rawUser.email,
+  emailVerified: rawUser.emailVerified,
+  name: rawUser.name,
+  attribution: {
+    source: typeof rawUser.source === "string" ? rawUser.source : undefined,
+    campaign: typeof rawUser.campaign === "string" ? rawUser.campaign : undefined,
+    content: typeof rawUser.content === "string" ? rawUser.content : undefined,
+    leadMagnet: typeof rawUser.leadMagnet === "string" ? rawUser.leadMagnet : undefined,
+  },
+} : null;
+const authorization = await authorizeCommunity(subject, getMembershipControlPlane());
+
+if (authorization.state === "anonymous") return Astro.redirect("/ingresar?next=/comunidad", 303);
+if (authorization.state === "unverified") return Astro.redirect("/verificacion-pendiente", 303);
+
+if (authorization.state === "unavailable") Astro.response.status = 503;
+if (authorization.state === "unauthorized") Astro.response.status = 403;
+
+const remark = authorization.state === "authorized"
+  ? await createRemark42Session(authorization.subject)
+  : { configured: false as const };
+---
+<AppLayout title="Comunidad" step="03 / Bienvenida MDX">
+  {authorization.state === "authorized" ? (
+    <>
+      <h1>Ya estás dentro.</h1>
+      <p class="lede">El contenido vive en archivos MDX versionados. Tu cuenta decide qué puedes hacer.</p>
+      <div class="identity-ticket">
+        <p class="meta">Identidad activa</p>
+        <p>{authorization.subject.name}</p>
+        <p>Email verificado / Comunidad general</p>
+      </div>
+      <article class="content-ticket prose">
+        <Welcome />
+      </article>
+      <section aria-labelledby="conversation-title">
+        <h2 id="conversation-title">Conversación</h2>
+        {remark.configured ? (
+          <form method="post" action="/api/remark42/sso">
+            <button class="action" type="submit">Abrir conversación con mi identidad</button>
+          </form>
+        ) : (
+          <div class="state-ticket">
+            <p class="meta">Remark42 preparado / Servicio local no conectado</p>
+            <p>La conversación se habilitará cuando exista el servicio aislado y su secreto coordinado. Tu acceso a la comunidad no depende de ese gate externo.</p>
+          </div>
+        )}
+      </section>
+      <form method="post" action="/api/cuenta/salir">
+        <button class="action action--secondary" type="submit">Cerrar sesión</button>
+      </form>
+    </>
+  ) : authorization.state === "unauthorized" ? (
+    <div class="state-ticket state-ticket--error">
+      <h1>Acceso no autorizado.</h1>
+      <p>Tu sesión es válida, pero el control plane no concedió acceso a este recurso.</p>
+    </div>
+  ) : (
+    <div class="state-ticket state-ticket--error">
+      <h1>Acceso temporalmente no disponible.</h1>
+      <p>No pudimos confirmar tu membresía. El sistema falla cerrado y no concede acceso por defecto.</p>
+    </div>
+  )}
+</AppLayout>

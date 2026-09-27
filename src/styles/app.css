@@ -1,0 +1,242 @@
+:root {
+  color-scheme: dark;
+  --sp-color-page: oklch(10.5% 0.01 150);
+  --sp-color-paper: oklch(16% 0.016 150);
+  --sp-color-paper-raised: oklch(19.5% 0.016 150);
+  --sp-color-slot: oklch(7% 0.008 150);
+  --sp-color-slot-raised: oklch(20% 0.02 150);
+  --sp-color-ink: oklch(87% 0.2 149);
+  --sp-color-ink-dim: oklch(74% 0.16 149);
+  --sp-color-ink-secondary: oklch(64% 0.13 149);
+  --sp-color-rule: oklch(38% 0.07 149);
+  --sp-color-error: oklch(68% 0.21 25);
+  --sp-font-family: "DotGothic16", "Courier New", ui-monospace, monospace;
+  --sp-shadow-paper: 0 18px 50px rgb(0 0 0 / 0.5);
+  --sp-focus-ring: 2px solid var(--sp-color-ink);
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--sp-color-page); }
+
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--sp-color-ink);
+  background:
+    radial-gradient(circle at 50% 0, oklch(22% 0.035 149 / 0.24), transparent 38rem),
+    var(--sp-color-page);
+  font-family: var(--sp-font-family);
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+a { color: inherit; }
+
+button,
+input,
+textarea { font: inherit; }
+
+button,
+a,
+input,
+textarea { outline: none; }
+
+:focus-visible {
+  outline: var(--sp-focus-ring);
+  outline-offset: 3px;
+}
+
+.machine {
+  min-height: 3.5rem;
+  padding: 0.8rem clamp(1rem, 4vw, 3rem);
+  display: grid;
+  grid-template-columns: auto minmax(4rem, 1fr) auto;
+  align-items: center;
+  gap: 1.25rem;
+  border-bottom: 1px solid var(--sp-color-rule);
+  background: var(--sp-color-slot-raised);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 0.65);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.machine__slot {
+  height: 0.8rem;
+  border: 1px solid var(--sp-color-rule);
+  background: var(--sp-color-slot);
+  box-shadow: inset 0 3px 8px rgb(0 0 0 / 0.85);
+}
+
+.shell {
+  width: min(100% - clamp(2rem, 7vw, 6rem), 64rem);
+  margin: clamp(2rem, 7vw, 5rem) auto;
+}
+
+.paper {
+  position: relative;
+  padding: clamp(1.25rem, 5vw, 3.5rem);
+  border: 1px solid var(--sp-color-rule);
+  background: var(--sp-color-paper);
+  box-shadow: var(--sp-shadow-paper);
+}
+
+.paper::after {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  left: 0;
+  height: 10px;
+  content: "";
+  background: linear-gradient(135deg, var(--sp-color-paper) 7px, transparent 0) 0 0 / 14px 10px repeat-x;
+}
+
+.paper__head,
+.paper__footer,
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.paper__head,
+.paper__footer,
+.meta {
+  color: var(--sp-color-ink-secondary);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.paper__head { padding-bottom: 1rem; border-bottom: 2px dashed var(--sp-color-rule); }
+.paper__footer { padding-top: 1rem; border-top: 2px dashed var(--sp-color-rule); }
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.08;
+  text-transform: uppercase;
+}
+
+h1 { margin: 1.75rem 0 1rem; font-size: clamp(2rem, 5vw, 3.35rem); }
+h2 { margin: 1.5rem 0 0.8rem; font-size: clamp(1.55rem, 2.5vw, 2.15rem); }
+h3 { margin: 1.25rem 0 0.6rem; font-size: 1.15rem; }
+p { margin: 0 0 1rem; }
+.lede { max-width: 46rem; color: var(--sp-color-ink-dim); }
+
+.form-grid { display: grid; gap: 1.25rem; margin: 2rem 0; }
+
+.field { display: grid; gap: 0.4rem; }
+
+.field label {
+  color: var(--sp-color-ink-secondary);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.field input,
+.field textarea {
+  min-height: 3rem;
+  padding: 0.55rem 0.7rem;
+  border: 0;
+  border-bottom: 2px dotted var(--sp-color-rule);
+  border-radius: 0;
+  color: var(--sp-color-ink);
+  background: transparent;
+  font-size: 1.125rem;
+}
+
+.field input:focus,
+.field textarea:focus { background: var(--sp-color-paper-raised); border-color: var(--sp-color-ink); }
+
+.action {
+  min-height: 2.75rem;
+  padding: 0.72rem 1rem;
+  border: 2px solid var(--sp-color-ink);
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sp-color-slot);
+  background: var(--sp-color-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.action:hover { background: var(--sp-color-ink-dim); }
+.action--secondary { color: var(--sp-color-ink); background: transparent; }
+.action[disabled] { opacity: 0.55; cursor: wait; }
+
+.actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.actions .action { flex: 1 1 12rem; }
+
+.form-status {
+  min-height: 1.6rem;
+  color: var(--sp-color-ink-dim);
+  font-size: 1rem;
+}
+
+.form-status[data-state="error"] { color: var(--sp-color-error); }
+
+.identity-ticket,
+.content-ticket,
+.state-ticket {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 2px dashed var(--sp-color-rule);
+  background: var(--sp-color-paper-raised);
+}
+
+.state-ticket--error { border-color: var(--sp-color-error); }
+
+.item-row {
+  padding: 0.65rem 0;
+  border-bottom: 1px dotted var(--sp-color-rule);
+  color: var(--sp-color-ink-dim);
+  font-size: 1rem;
+}
+
+.prose { font-size: 1.125rem; }
+.prose ul, .prose ol { padding-left: 1.5rem; }
+.prose li { margin-bottom: 0.7rem; }
+.prose strong { color: var(--sp-color-ink); }
+.prose blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 2px solid var(--sp-color-ink); }
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 10;
+  padding: 0.5rem;
+  color: var(--sp-color-slot);
+  background: var(--sp-color-ink);
+  transform: translateY(-160%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+@media (max-width: 52rem) {
+  .machine { grid-template-columns: 1fr auto; }
+  .machine__slot { display: none; }
+  .shell { width: min(100% - 2rem, 64rem); margin: 2rem auto; }
+  .paper { padding: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

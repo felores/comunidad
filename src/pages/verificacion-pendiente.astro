@@ -1,0 +1,16 @@
+---
+import AppLayout from "../layouts/AppLayout.astro";
+export const prerender = false;
+---
+<AppLayout title="Verifica tu email" step="02 / Verificación">
+  <h1>Confirma que eres tú.</h1>
+  <p class="lede">Enviamos un enlace seguro. El correo conecta tu cuenta y tu participación sin publicar tu dirección.</p>
+  <div class="state-ticket" role="status">
+    <p class="meta">Estado de identidad</p>
+    <p>Email enviado</p>
+  </div>
+  <div class="item-row"><span>Cuenta</span><span>Creada</span></div>
+  <div class="item-row"><span>Conversación</span><span>Bloqueada hasta verificar</span></div>
+  <div class="item-row"><span>Pago</span><span>No requerido</span></div>
+  <p><a href="/ingresar">Volver al ingreso</a></p>
+</AppLayout>

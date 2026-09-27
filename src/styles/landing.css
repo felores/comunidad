@@ -1,0 +1,108 @@
+:root {
+  color-scheme: dark;
+  --sp-lp-page: #0b0f0d;
+  --sp-lp-surface: #131a16;
+  --sp-lp-surface-translucent: rgb(19 26 22 / 0.78);
+  --sp-lp-border: #29352e;
+  --sp-lp-text: #f0f5f1;
+  --sp-lp-muted: #9aa89f;
+  --sp-lp-phosphor: #9cff8a;
+  --sp-lp-action: #173d27;
+  --sp-lp-font-sans: "Geist Variable", "Helvetica Neue", Arial, sans-serif;
+  --sp-lp-font-mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--sp-lp-page); }
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--sp-lp-text);
+  background: var(--sp-lp-page);
+  font-family: var(--sp-lp-font-sans);
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--sp-lp-phosphor); outline-offset: 3px; }
+
+.lp-shell { width: min(100% - 2rem, 76rem); margin: 0 auto; }
+.lp-nav {
+  position: relative;
+  z-index: 2;
+  min-height: 4.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--sp-lp-border);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--sp-lp-surface-translucent);
+  backdrop-filter: blur(14px);
+}
+.lp-brand { margin-right: auto; font-weight: 600; text-decoration: none; }
+.lp-nav a:not(.lp-brand) { min-height: 2.5rem; padding: 0.5rem 0.75rem; display: inline-flex; align-items: center; font-size: 1rem; text-decoration: none; }
+.lp-nav__action { border: 1px solid var(--sp-lp-border); border-radius: 0.625rem; background: var(--sp-lp-action); }
+
+.lp-hero {
+  min-height: calc(100vh - 5.5rem);
+  padding: clamp(4rem, 11vh, 8rem) 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
+  align-items: center;
+  gap: clamp(2.5rem, 8vw, 7rem);
+}
+.lp-copy { position: relative; z-index: 1; animation: lp-enter 700ms cubic-bezier(.2, .7, .2, 1) both; }
+.lp-meta { margin: 0 0 1.5rem; color: var(--sp-lp-phosphor); font-family: var(--sp-lp-font-mono); font-size: 0.875rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.lp-title { max-width: 10ch; margin: 0; font-size: clamp(3rem, 7vw, 6.75rem); font-weight: 500; letter-spacing: -0.055em; line-height: 0.92; }
+.lp-lede { max-width: 38rem; margin: 1.75rem 0; color: var(--sp-lp-muted); font-size: clamp(1.125rem, 1.8vw, 1.375rem); }
+.lp-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.lp-button { min-height: 2.75rem; padding: 0.65rem 1rem; border: 1px solid var(--sp-lp-border); border-radius: 0.625rem; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; text-decoration: none; }
+.lp-button--primary { background: var(--sp-lp-action); }
+.lp-button:hover { border-color: var(--sp-lp-phosphor); }
+
+.lp-art {
+  position: relative;
+  min-height: 32rem;
+  overflow: hidden;
+  border: 1px solid var(--sp-lp-border);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 22% 22%, rgb(156 255 138 / 0.16), transparent 18rem),
+    linear-gradient(145deg, transparent 38%, rgb(82 232 120 / 0.11) 38.2%, transparent 39%),
+    var(--sp-lp-surface);
+}
+.lp-art::before,
+.lp-art::after {
+  position: absolute;
+  content: "";
+  border: 1px solid rgb(156 255 138 / 0.38);
+  border-radius: 50%;
+}
+.lp-art::before { inset: 13% -22% 18% 20%; transform: rotate(-18deg); }
+.lp-art::after { inset: 26% 16% -18% -20%; transform: rotate(32deg); }
+.lp-art__line { position: absolute; inset: 48% 9% auto; height: 1px; background: linear-gradient(90deg, transparent, var(--sp-lp-phosphor), transparent); }
+.lp-art__label { position: absolute; right: 1rem; bottom: 1rem; color: var(--sp-lp-muted); font-family: var(--sp-lp-font-mono); font-size: 0.875rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+@keyframes lp-enter {
+  from { opacity: 0; filter: blur(8px); transform: translateY(12px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@media (max-width: 52rem) {
+  .lp-nav__link { display: none !important; }
+  .lp-hero { min-height: auto; grid-template-columns: 1fr; padding-top: 4.5rem; }
+  .lp-title { font-size: clamp(3rem, 15vw, 4.3rem); }
+  .lp-art { min-height: 20rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
